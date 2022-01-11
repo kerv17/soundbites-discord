@@ -12,6 +12,10 @@ with open('config/options.json') as f:
 client = commands.Bot(command_prefix=data["prefix"], help_command=None)
 @client.command()
 async def play(ctx: commands.context, sound: str):
+    print('play',sound)
+    if not os.path.isfile("clips/"+ sound + ".mp3"):
+        await ctx.send(sound + " is not a sound.")
+        return
     voicechannel = ctx.author.voice.channel
     voice = await voicechannel.connect()
 
@@ -22,6 +26,7 @@ async def play(ctx: commands.context, sound: str):
 
 @client.command()
 async def add(ctx: commands.context, input: str, url: str):
+    print('add', input, url)
     song_there = os.path.isfile(input+".mp3")
     if song_there:
         await ctx.send("This name is already in use")
@@ -46,6 +51,7 @@ async def add(ctx: commands.context, input: str, url: str):
 
 @client.command()
 async def list(ctx: commands.context):
+    print("List")
     list = os.listdir('./clips')
     string = "Here is the list:"
 
@@ -55,6 +61,7 @@ async def list(ctx: commands.context):
 
 @client.command()
 async def help(ctx:commands.context):
+    print("Help")
     string = "`*play <sound>`: play a soundbite in the server you are in \n" \
             "`*add <sound-name> <url>`: add soundbite to database \n" \
             "`*list`: list all the sounds in the database"
